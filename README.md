@@ -34,3 +34,17 @@ This project aims for the detecting the barcode and scan the barcode and detect 
   blurred = cv2.blur(gradient, (9, 9))
   (_, thresh) = cv2.threshold(blurred, 225, 255, cv2.THRESH_BINARY)
   ```
+
+* But there can be a case that there are gaps between the vertical bars of the barcode. In order to close these gaps and make it easier for our algorithm to detect the “blob”-like region of the barcode, we’ll need to perform some basic morphological operations. We’ll start by constructing a rectangular kernel using the `cv2.getStructuringElement`. This kernel has a width that is larger than the height, thus allowing us to close the gaps between vertical stripes of the barcode. We then perform our morphological operation by applying our kernel to our thresholded image, thus attempting to close the the gaps between the bars.
+  ```
+  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (21, 7))  ------> Making rectangular kernel with width > height
+  closed = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)   ------> morphological operation
+  ```
+
+* But there might be the case that there are small blobs in the image that are not part of the actual barcode. So, how can we remove blobs - we are doing here is performing 4 iterations of erosions, followed by 4 iterations of dilations. Dilation adds pixels to the boundaries of objects in an image, while erosion removes pixels on object boundaries. An erosion will “erode” the white pixels in the image, thus removing the small blobs, whereas a dilation will “dilate” the remaining white pixels and grow the white regions back out. After our series of erosions and dilations you can see that the small blobs have been successfully removed and we would be only left with the barcode region. 
+  ```
+  closed = cv2.erode(closed, None, iterations = 4)
+  closed = cv2.dilate(closed, None, iterations = 4)
+  ```
+  
+TO BE CONTINUE .... :)
