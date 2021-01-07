@@ -23,5 +23,14 @@ This project aims for the detecting the barcode and scan the barcode and detect 
   gradY = cv2.Sobel(gray, ddepth=ddepth, dx=0, dy=1, ksize=-1)
   ```
   
-  TO BE CONTINUE --------:)
+* Then, we subtract the y-gradient of the Scharr operator from the x-gradient of the Scharr operator. By performing this subtraction we are left with regions of the image that have high horizontal gradients and low vertical gradients.
+  ```
+  gradient = cv2.subtract(gradX, gradY)
+  gradient = cv2.convertScaleAbs(gradient)
+  ```
   
+* We will apply an average blur to the gradient image using a 9 x 9 kernel. This will help smooth out high frequency noise in the gradient representation of the image. We’ll then threshold the blurred image. Any pixel in the gradient image that is not greater than 225 is set to 0 (black). Otherwise, the pixel is set to 255 (white).
+  ```
+  blurred = cv2.blur(gradient, (9, 9))
+  (_, thresh) = cv2.threshold(blurred, 225, 255, cv2.THRESH_BINARY)
+  ```
