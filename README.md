@@ -10,6 +10,12 @@ To Detect the barcode on the image
 This project aims for the detecting the barcode and scan the barcode and detect the object for the barcode detected. The code is executed in python language in Jupyter Notebook. 
 
 ## Detailed Explanation about Project
+* First install necessary libraries. 
+  1) `import numpy as np` - NumPy for numeric processing
+  2) `import argparse` - For parsing command line arguments
+  3) `import imutils` - For making basic image processing functions such as translation, rotation, resizing, skeletonization, displaying Matplotlib images, sorting contours, detecting edges, and much more easier with OpenCV
+  4) `import cv2` - OpenCV. 
+
 * Would be reading/loading the image and would be converting it into gray scale image. 
   ```
   image = cv2.imread(args["image"])
