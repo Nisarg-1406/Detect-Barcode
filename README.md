@@ -47,4 +47,17 @@ This project aims for the detecting the barcode and scan the barcode and detect 
   closed = cv2.dilate(closed, None, iterations = 4)
   ```
   
-TO BE CONTINUE .... :)
+* Contours can be explained simply as a curve joining all the continuous points (along the boundary), having same color or intensity. The contours are a useful tool for shape analysis and object detection and recognition. We use **RETR_EXTERNAL** (Contour Retrieval Mode) because it returns only the extreme outer flags i.e only the outer boundary. Now coming to `cv2.CHAIN_APPROX_SIMPLE`, If we pass `cv2.CHAIN_APPROX_NONE` - all the boundary points are stored, but we only need the endpoints, so it removes all redundant points and compresses the contour, thereby saving memory. Then we use that `imutils.grab_contours(cnts)` that grabs the appropriate tuple value based on whether we are using OpenCV 2.4, 3, or 4. Then with the help of `sorted(cnts, key = cv2.contourArea, reverse = True)[0]` that find the largest contour in the image, which if we have done our image processing steps correctly, should correspond to the barcoded region as we are sorting in reversing order and getting the first value and storing in var c. 
+  ```
+  cnts = cv2.findContours(closed.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+  cnts = imutils.grab_contours(cnts)
+  c = sorted(cnts, key = cv2.contourArea, reverse = True)[0]
+  ```
+  
+  * To get the rotated bounding rectangle of contour we use `rect = cv2.minAreaRect(c)`. Now to create the box around that rectangle, if we use OpenCV 2.4, then use `cv2.cv.BoxPoints`, else if use OpenCV 3, then use `cv2.boxPoints`, so overall we write it as - `box = cv2.cv.BoxPoints(rect) if imutils.is_cv2() else cv2.boxPoints(rect)`. 
+    ```
+    rect = cv2.minAreaRect(c)
+    box = cv2.cv.BoxPoints(rect) if imutils.is_cv2() else cv2.boxPoints(rect)
+    box = np.int0(box)  --------> np.int0 is same as np.int64.
+    ```
+
