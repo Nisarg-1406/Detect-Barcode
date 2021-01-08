@@ -54,10 +54,26 @@ This project aims for the detecting the barcode and scan the barcode and detect 
   c = sorted(cnts, key = cv2.contourArea, reverse = True)[0]
   ```
   
-  * To get the rotated bounding rectangle of contour we use `rect = cv2.minAreaRect(c)`. Now to create the box around that rectangle, if we use OpenCV 2.4, then use `cv2.cv.BoxPoints`, else if use OpenCV 3, then use `cv2.boxPoints`, so overall we write it as - `box = cv2.cv.BoxPoints(rect) if imutils.is_cv2() else cv2.boxPoints(rect)`. 
+* To get the rotated bounding rectangle of contour we use `rect = cv2.minAreaRect(c)`. Now to create the box around that rectangle, if we use OpenCV 2.4, then use `cv2.cv.BoxPoints`, else if use OpenCV 3, then use `cv2.boxPoints`, so overall we write it as - `box = cv2.cv.BoxPoints(rect) if imutils.is_cv2() else cv2.boxPoints(rect)`. 
     ```
     rect = cv2.minAreaRect(c)
     box = cv2.cv.BoxPoints(rect) if imutils.is_cv2() else cv2.boxPoints(rect)
     box = np.int0(box)  --------> np.int0 is same as np.int64.
     ```
 
+* To draw the counters - `cv2.drawContours` function is used. It can also be used to draw any shape provided you have its boundary points. Its first argument is source image, second argument is the contours which should be passed as a Python list, third argument is index of contours (useful when drawing individual contour. To draw all contours, pass -1) and remaining arguments are color, thickness etc.
+  ```
+  cv2.drawContours(image, [box], -1, (0, 255, 0), 3)
+  cv2.imshow("Image", image)
+  cv2.waitKey(0)
+  ```
+  
+## About me
+**IF YOU LIKED MY WORK, PLEASE HIT THE STAR BUTTON, AND IF POSSIBLE DO PLEASE SHARE, SO THAT COMMUNITY CAN GET BENIFIT OUT OF IT BEACUSE I AM EXLPANING EACH AND EVERY LINE OF CODE FOR EACH AND EVERY PROJECT OF MINE.**
+
+I am Solving **Algorithms and Data Structure Problems from more than 210 Days Without any off-Day and have solved more than 400 Questions on various topics**.
+You can Visit my Profile of LeetCode here - **https://leetcode.com/Nisarg1406/**
+
+I am good at Algorithms and Data structure and I have good Projects in Machine learning and Deep Learning (Computer Vision). **I am and would be posting the detialed explantion of each and every project working**. I am activily looking for an Internhip in **Software development enginering (SDE) Domain and Machine learning Domain**.
+
+You can contact me on my mail ID - nisarg.mehta18@vit.edu OR nisargmehta2000@gmail.com and even Contact me on LinkedIn - https://www.linkedin.com/in/nisarg-mehta-4a378a185/
